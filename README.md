@@ -1,7 +1,7 @@
 # micropython-weather-ttgo
 MicroPython Tempest Weather display for LiLyGO_T-Display Code Repository
 
-1. Build Micropython for LiLyGo_T-Display and load to device.
+1. Build Micropython for LiLyGo_T-Display and load to device (git clone <b>https://github.com/Xinyuan-LilyGO/lilygo-micropython</b>).
 2. ampy -p COMx put main.py
 3. ampy -p COMx put weather-ttgo
 4. Copy config_sample.py as config.py in configs directory.
