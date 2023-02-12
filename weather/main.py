@@ -1,4 +1,5 @@
 import network
+import ntptime
 import gc
 import json
 import utime as time
@@ -40,12 +41,14 @@ def main():
        center_text("Not connected to WiFi")
        return
 
+    ntptime.settime()
     tft.fill(st7789.BLACK)
     tft.png('weather/images/weather-64.png', 0, 0, st7789.SLOW)
     #tft.text(font,jbody['station_name'],80,0)
 
     station_id = settings.tempest['station-id']
     token = settings.tempest['token']
+    #url = "http://swd.weatherflow.com/swd/rest/observations/station/52156?token=b6de0b7b-a78f-40eb-afbb-9b44679f3395"
     url = "http://swd.weatherflow.com/swd/rest/observations/station/"+station_id+"?token="+token
 
     while True:
@@ -53,16 +56,21 @@ def main():
         body = r.read()
         r.close()
         jbody = json.loads(body)
+        obs = jbody['obs']
 
         center_text(jbody['public_name'], x=30, y=-50)    
-        loc = time.localtime()
+        if jbody['timezone'] == 'America/New_York':
+            tzoffset = (-5*3600)    
+        else:    
+            tzoffset = 0
+        tme = obs[0]['timestamp']+tzoffset
+        loc = time.localtime(tme)
         dte = "{:02n}".format(loc[1])+"/"+"{:02n}".format(loc[2])+"/"+"{:02n}".format(loc[0])
         tft.text(font,dte,80,26)
         tme = "{:02n}".format(loc[3])+":"+"{:02n}".format(loc[4])  #+":"+"{:02n}".format(loc[5])
         tft.text(font,tme,114,46)                                   # was 84,64
     
         tft.text(font,"Temp:",0,70)
-        obs = jbody['obs']
 
         tmp = obs[0]['air_temperature']
         far = int(tmp * 1.8 + 32)
@@ -75,7 +83,7 @@ def main():
     
         wav = str(obs[0]['wind_avg'])
         tft.text(font,"Wind Avg:",0,100)
-        tft.text(font,wav,150,100)    
+        tft.text(font,wav,150,102)    
         gc.collect()
         time.sleep(300)							# sleep for 5 minutes
     
