@@ -1,7 +1,7 @@
 import network
 import json
 import time
-import configs.config as settings
+import weather.configs.config as settings
 
 def connect():
    wlan_sta = network.WLAN(network.STA_IF)

@@ -48,7 +48,6 @@ def main():
 
     station_id = settings.tempest['station-id']
     token = settings.tempest['token']
-    #url = "http://swd.weatherflow.com/swd/rest/observations/station/52156?token=b6de0b7b-a78f-40eb-afbb-9b44679f3395"
     url = "http://swd.weatherflow.com/swd/rest/observations/station/"+station_id+"?token="+token
 
     while True:
@@ -62,10 +61,11 @@ def main():
         if jbody['timezone'] == 'America/New_York':
             tzoffset = (-5*3600)    
         else:    
-            tzoffset = 0
-        tme = obs[0]['timestamp']+tzoffset
+            tzoffset = 0 
+        tme = (obs[0]['timestamp']+tzoffset)
         loc = time.localtime(tme)
-        dte = "{:02n}".format(loc[1])+"/"+"{:02n}".format(loc[2])+"/"+"{:02n}".format(loc[0])
+        yr  = loc[0]
+        dte = "{:02n}".format(loc[1])+"/"+"{:02n}".format(loc[2])+"/"+"{:02n}".format(loc[0]-30)
         tft.text(font,dte,80,26)
         tme = "{:02n}".format(loc[3])+":"+"{:02n}".format(loc[4])  #+":"+"{:02n}".format(loc[5])
         tft.text(font,tme,114,46)                                   # was 84,64
