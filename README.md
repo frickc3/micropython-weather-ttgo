@@ -7,6 +7,6 @@ MicroPython Tempest Weather display for LiLyGO_T-Display Code Repository
 4. Copy config_sample.py as config.py in configs directory.
 5. Edit config.py add in WiFi SSID and Password and Tempest device token and station_id. 
 
-Open up thonny and <b>import main</b>.
+Reset device (main.py will start weather/main.py if your boot.py calls main).
 
 Enjoy. 
